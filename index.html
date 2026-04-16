@@ -58,14 +58,17 @@ html, body {
   height: 35px;
   background:#80806f;
   border-radius: 20px;
-  overflow: hidden;
+  overflow: visible; /* 🔥 CAMBIO CLAVE */
 }
 
 .relleno {
+  position: relative;
   height: 100%;
   width: 0%;
   background: #0ed1f3;
+  border-radius: 20px; /* 🔥 mantiene bordes suaves */
   transition: width 0.8s ease;
+
 }
 
   .porcentaje {
@@ -83,6 +86,15 @@ html, body {
   font-size: 92px;
   margin-left: 5px;
 }
+  .ball {
+  position: absolute;
+  right: -48px; /* 🔥 lo saca un poco para que no quede cortado */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 143px; /* ajusta tamaño */
+  height: 78px;
+  pointer-events: none;
+}
 
 </style>
 </head>
@@ -97,20 +109,28 @@ html, body {
 
   <!-- BARRAS -->
   <div id="barra-pasion" class="barra">
-    <div id="pasion" class="relleno"></div>
+  <div id="pasion" class="relleno">
+    <img src="Ball.png" class="ball">
   </div>
+</div>
 
   <div id="barra-tension" class="barra">
-    <div id="tension" class="relleno"></div>
+  <div id="tension" class="relleno">
+    <img src="Ball.png" class="ball">
   </div>
+</div>
 
   <div id="barra-familia" class="barra">
-    <div id="familia" class="relleno"></div>
+  <div id="familia" class="relleno">
+    <img src="Ball.png" class="ball">
   </div>
+</div>
 
-  <div id="barra-cerveza" class="barra">
-    <div id="cerveza" class="relleno"></div>
+<div id="barra-cerveza" class="barra">
+  <div id="cerveza" class="relleno">
+    <img src="Ball.png" class="ball">
   </div>
+</div>
 
   <!-- PORCENTAJES -->
   <div id="pasion-texto" class="porcentaje">
