@@ -8,27 +8,29 @@
 html, body {
   margin:0;
   padding:0;
-  width:2560px;
-  height:1440px;
   overflow:hidden;
+  background:#000;
   font-family: Arial, sans-serif;
 }
 
+/* 🔥 LIENZO FIJO (TU DISEÑO) */
 .contenedor {
-  position: relative;
+  position:absolute;
   width:2560px;
   height:1440px;
+  transform-origin: top left;
 }
 
-/* VIDEO */
+/* 🔥 VIDEO FULL SCREEN REAL (NO DEJA BORDES) */
 #fondoVideo {
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  z-index:0;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  transform: translate(-50%, -50%);
+  z-index: -1;
 }
 
 /* =========================
@@ -47,7 +49,7 @@ html, body {
 #pasion-texto   { position:absolute; top:488px; left:1181px; }
 #tension-texto  { position:absolute; top:488px; left:3028px; }
 #familia-texto  { position:absolute; top:1484px; left:1223px; }
-  #cerveza-texto  { position:absolute; top:1484px; left:2972px; }
+#cerveza-texto  { position:absolute; top:1484px; left:2972px; }
 
 /* =========================
    ESTILOS
@@ -58,7 +60,7 @@ html, body {
   height: 38px;
   background:#80806f;
   border-radius: 20px;
-  overflow: visible; /* 🔥 CAMBIO CLAVE */
+  overflow: visible;
 }
 
 .relleno {
@@ -66,12 +68,11 @@ html, body {
   height: 100%;
   width: 0%;
   background: #0ed1f3;
-  border-radius: 20px; /* 🔥 mantiene bordes suaves */
+  border-radius: 20px;
   transition: width 0.8s ease;
-
 }
 
-  .porcentaje {
+.porcentaje {
   font-weight: bold;
   color: #0ed1f3;
 }
@@ -86,12 +87,14 @@ html, body {
   font-size: 92px;
   margin-left: 5px;
 }
-  .ball {
+
+/* ⚽ balón */
+.ball {
   position: absolute;
-  right: -48px; /* 🔥 lo saca un poco para que no quede cortado */
+  right: -48px;
   top: 50%;
   transform: translateY(-50%);
-  width: 143px; /* ajusta tamaño */
+  width: 143px;
   height: 78px;
   pointer-events: none;
 }
@@ -100,57 +103,86 @@ html, body {
 </head>
 
 <body>
-<div class="contenedor">
 
-  <!-- VIDEO -->
-  <video autoplay muted loop playsinline id="fondoVideo">
-    <source src="fondo.mp4" type="video/mp4">
-  </video>
+<!-- 🎥 VIDEO GLOBAL -->
+<video autoplay muted loop playsinline id="fondoVideo">
+  <source src="fondo.mp4" type="video/mp4">
+</video>
+
+<div class="contenedor" id="contenedor">
 
   <!-- BARRAS -->
   <div id="barra-pasion" class="barra">
-  <div id="pasion" class="relleno">
-    <img src="Ball.png" class="ball">
+    <div id="pasion" class="relleno">
+      <img src="Ball.png" class="ball">
+    </div>
   </div>
-</div>
 
   <div id="barra-tension" class="barra">
-  <div id="tension" class="relleno">
-    <img src="Ball.png" class="ball">
+    <div id="tension" class="relleno">
+      <img src="Ball.png" class="ball">
+    </div>
   </div>
-</div>
 
   <div id="barra-familia" class="barra">
-  <div id="familia" class="relleno">
-    <img src="Ball.png" class="ball">
+    <div id="familia" class="relleno">
+      <img src="Ball.png" class="ball">
+    </div>
   </div>
-</div>
 
-<div id="barra-cerveza" class="barra">
-  <div id="cerveza" class="relleno">
-    <img src="Ball.png" class="ball">
+  <div id="barra-cerveza" class="barra">
+    <div id="cerveza" class="relleno">
+      <img src="Ball.png" class="ball">
+    </div>
   </div>
-</div>
 
   <!-- PORCENTAJES -->
   <div id="pasion-texto" class="porcentaje">
-  <span class="numero">0</span><span class="simbolo">%</span>
-</div>
+    <span class="numero">0</span><span class="simbolo">%</span>
+  </div>
+
   <div id="tension-texto" class="porcentaje">
-  <span class="numero">0</span><span class="simbolo">%</span>
-</div>
+    <span class="numero">0</span><span class="simbolo">%</span>
+  </div>
+
   <div id="familia-texto" class="porcentaje">
-  <span class="numero">0</span><span class="simbolo">%</span>
-</div>
+    <span class="numero">0</span><span class="simbolo">%</span>
+  </div>
+
   <div id="cerveza-texto" class="porcentaje">
-  <span class="numero">0</span><span class="simbolo">%</span>
-</div>
+    <span class="numero">0</span><span class="simbolo">%</span>
+  </div>
 
 </div>
 
 <script>
 
 const URL = "https://script.google.com/macros/s/AKfycbxCRYw26GF73jfQ9Y0ptihuo6V9cApb9mv-Da4CMmDy_ZVQhDe-4s3jxmFJX77zQK0S_A/exec";
+
+/* 🔥 ESCALADO PRO (NO SE MUEVE NADA) */
+function escalarPantalla() {
+  const baseWidth = 2560;
+  const baseHeight = 1440;
+
+  const escalaX = window.innerWidth / baseWidth;
+  const escalaY = window.innerHeight / baseHeight;
+
+  const escala = Math.max(escalaX, escalaY);
+
+  const contenedor = document.getElementById("contenedor");
+
+  contenedor.style.transform = `scale(${escala})`;
+
+  const offsetX = (window.innerWidth - baseWidth * escala) / 2;
+  const offsetY = (window.innerHeight - baseHeight * escala) / 2;
+
+  contenedor.style.left = offsetX + "px";
+  contenedor.style.top = offsetY + "px";
+}
+
+window.addEventListener("resize", escalarPantalla);
+escalarPantalla();
+
 
 function actualizar() {
   fetch(URL)
@@ -162,19 +194,17 @@ function actualizar() {
       const pasion = Math.round(resultados["Pasión"].porcentaje);
       const tension = Math.round(resultados["Tensión"].porcentaje);
       const familia = Math.round(resultados["Familia y amigos"].porcentaje);
-     const cerveza = Math.round(resultados["Cerveza"].porcentaje);
+      const cerveza = Math.round(resultados["Cerveza"].porcentaje);
 
-      // BARRAS
       document.getElementById("pasion").style.width = pasion + "%";
       document.getElementById("tension").style.width = tension + "%";
       document.getElementById("familia").style.width = familia + "%";
       document.getElementById("cerveza").style.width = cerveza + "%";
 
-      // TEXTOS
       document.querySelector("#pasion-texto .numero").innerText = pasion;
       document.querySelector("#tension-texto .numero").innerText = tension;
-document.querySelector("#familia-texto .numero").innerText = familia;
-document.querySelector("#cerveza-texto .numero").innerText = cerveza;
+      document.querySelector("#familia-texto .numero").innerText = familia;
+      document.querySelector("#cerveza-texto .numero").innerText = cerveza;
 
     });
 }
@@ -186,3 +216,12 @@ setInterval(actualizar, 5000);
 
 </body>
 </html>
+
+
+
+
+
+
+ 
+
+   
