@@ -2,226 +2,212 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Barra Mundial</title>
+<meta name="viewport" content="width=2304, height=768">
+<link rel="stylesheet" href="https://use.typekit.net/vsp7vcb.css">
+
+<title>Ranking Grupo K</title>
 
 <style>
-html, body {
-  margin:0;
-  padding:0;
-  overflow:hidden;
-  background:#000;
-  font-family: Arial, sans-serif;
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-/* 🔥 LIENZO FIJO (TU DISEÑO) */
-.contenedor {
-  position:absolute;
-  width:2560px;
-  height:1440px;
-  transform-origin: top left;
+html,body{
+    width:2560px;
+    height:1440px;
+    overflow:hidden;
+    font-family:Arial, sans-serif;
 }
 
-/* 🔥 VIDEO FULL SCREEN REAL (NO DEJA BORDES) */
-#fondoVideo {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
-  transform: translate(-50%, -50%);
-  z-index: -1;
+#bgVideo{
+    position:absolute;
+    top:0;
+    left:0;
+    width:2560px;
+    height:1440px;
+    object-fit:cover;
+    z-index:1;
 }
 
-/* =========================
-   BARRAS (COORDENADAS)
-========================= */
-
-#barra-pasion   { position:absolute; top:476px; left:830px; }
-#barra-tension  { position:absolute; top:476px; left:1604px; }
-#barra-familia  { position:absolute; top:950px; left:830px; }
-#barra-cerveza  { position:absolute; top:949px; left:1595px; }
-
-/* =========================
-   PORCENTAJES (COORDENADAS)
-========================= */
-
-#pasion-texto   { position:absolute; top:394px; left:601px; }
-#tension-texto  { position:absolute; top:394px; left:1369px; }
-#familia-texto  { position:absolute; top:873px; left:601px; }
-#cerveza-texto  { position:absolute; top:872px; left:1369px; }
-
-/* =========================
-   ESTILOS
-========================= */
-
-.barra {
-  width: 280px;
-  height: 19px;
-  background:#80806f;
-  border-radius: 20px;
-  overflow: visible;
+#contenido{
+    position:absolute;
+    width:2304px;
+    height:768px;
+    z-index:2;
 }
 
-.relleno {
-  position: relative;
-  height: 100%;
-  width: 0%;
-  background: #0ed1f3;
-  border-radius: 20px;
-  transition: width 0.8s ease;
+/* Posiciones de los equipos */
+/* NOMBRES */
+
+.equipo{
+
+    position:absolute;
+
+    font-family:"remora-sans-w5", sans-serif;
+    font-weight:900;
+    font-style:normal;
+
+    font-size:99px;
+
+    color:#012bff;
+
+    width:700px;
+    height:70px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    white-space:nowrap;
+    text-transform: uppercase;
 }
 
-.porcentaje {
-  font-weight: bold;
-  color: #0ed1f3;
+/* PORCENTAJES */
+
+.porcentaje{
+
+    position:absolute;
+
+    font-family:"remora-sans-w5", sans-serif;
+    font-weight:900;
+    font-style:normal;
+
+    font-size:89px;
+
+    color:#0a2957;
+
+    white-space:nowrap;
+
+    z-index:9999;
+
+    border:2px solid red; /* temporal */
+}
+#v1{
+    left:1703px;
+    top:469px;
 }
 
-/* número grande */
-.numero {
-  font-size: 118px;
+#v2{
+    left:1703px;
+    top:639px;
 }
 
-/* % pequeño */
-.simbolo {
-  font-size: 64px;
-  margin-left: 5px;
+#v3{
+    left:1703px;
+    top:804px;
 }
 
-/* ⚽ balón */
-.ball {
-  position: absolute;
-  right: -48px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 103px;
-  height: 59px;
-  pointer-events: none;
+#v4{
+    left:1703px;
+    top:956px;
+
 }
+
+/* Coordenadas independientes */
+
+#p1{
+    left:701px;
+    top:496px;
+}
+
+#p2{
+    left:701px;
+    top:664px;
+}
+
+#p3{
+    left:701px;
+    top:823px;
+}
+
+#p4{
+    left:701px;
+    top:982px;
+}
+
 
 </style>
 </head>
 
 <body>
 
-<!-- 🎥 VIDEO GLOBAL -->
-<video autoplay muted loop playsinline id="fondoVideo">
-  <source src="fondo.mp4" type="video/mp4">
+<video
+    id="bgVideo"
+    autoplay
+    muted
+    loop
+    playsinline>
+    <source src="fondo.mp4" type="video/mp4">
 </video>
 
-<div class="contenedor" id="contenedor">
+<div id="contenido">
 
-  <!-- BARRAS -->
-  <div id="barra-pasion" class="barra">
-    <div id="pasion" class="relleno">
-      <img src="Ball.png" class="ball">
-    </div>
-  </div>
+<div id="p1" class="equipo"></div>
+<div id="p2" class="equipo"></div>
+<div id="p3" class="equipo"></div>
+<div id="p4" class="equipo"></div>
 
-  <div id="barra-tension" class="barra">
-    <div id="tension" class="relleno">
-      <img src="Ball.png" class="ball">
-    </div>
-  </div>
-
-  <div id="barra-familia" class="barra">
-    <div id="familia" class="relleno">
-      <img src="Ball.png" class="ball">
-    </div>
-  </div>
-
-  <div id="barra-cerveza" class="barra">
-    <div id="cerveza" class="relleno">
-      <img src="Ball.png" class="ball">
-    </div>
-  </div>
-
-  <!-- PORCENTAJES -->
-  <div id="pasion-texto" class="porcentaje">
-    <span class="numero">0</span><span class="simbolo">%</span>
-  </div>
-
-  <div id="tension-texto" class="porcentaje">
-    <span class="numero">0</span><span class="simbolo">%</span>
-  </div>
-
-  <div id="familia-texto" class="porcentaje">
-    <span class="numero">0</span><span class="simbolo">%</span>
-  </div>
-
-  <div id="cerveza-texto" class="porcentaje">
-    <span class="numero">0</span><span class="simbolo">%</span>
-  </div>
+<div id="v1" class="porcentaje"></div>
+<div id="v2" class="porcentaje"></div>
+<div id="v3" class="porcentaje"></div>
+<div id="v4" class="porcentaje"></div>
 
 </div>
 
 <script>
 
-const URL = "https://script.google.com/macros/s/AKfycbxCRYw26GF73jfQ9Y0ptihuo6V9cApb9mv-Da4CMmDy_ZVQhDe-4s3jxmFJX77zQK0S_A/exec";
+const API_URL = "https://script.googleusercontent.com/macros/echo?user_content_key=AUkAhnQe-iffkDRGCLcL9WIw_Y8I-HDwFCwarw_f5-Vr8__6vLEYLry-Gw5_GVd_1W0XQTug0cKTqc6WLxW_bx6GTEd2D9RnhkUO2KxQ2OsIFt-i-fS-hNgtVrCFH-y2657jxfNFmdMtVUgu04qPItU08rD-5CQu5oxSP9Af7dH0JXR1da2BXQpK0L8d1z3HFHJFXKzej_Q_hIAInAvVrMmpcvV3aSJ3ml9VTznhfZbQ_7_JpKCoTnM4m2PRskTuQIo0PDhkVJkmJ_datNgT-Z2VuCX78WVa0g&lib=MT1LZbfHctya4uObz9hnmzqeEHa1C_Htb";
 
-/* 🔥 ESCALADO PRO (NO SE MUEVE NADA) */
-function escalarPantalla() {
-  const baseWidth = 2560;
-  const baseHeight = 1440;
 
-  const escalaX = window.innerWidth / baseWidth;
-  const escalaY = window.innerHeight / baseHeight;
+    async function cargarRanking(){
 
-  const escala = Math.max(escalaX, escalaY);
+    try{
 
-  const contenedor = document.getElementById("contenedor");
+        const response = await fetch(API_URL);
+        const ranking = await response.json();
 
-  contenedor.style.transform = `scale(${escala})`;
+        document.getElementById("p1").innerText =
+            ranking[0]?.equipo || "";
 
-  const offsetX = (window.innerWidth - baseWidth * escala) / 2;
-  const offsetY = (window.innerHeight - baseHeight * escala) / 2;
+        document.getElementById("p2").innerText =
+            ranking[1]?.equipo || "";
 
-  contenedor.style.left = offsetX + "px";
-  contenedor.style.top = offsetY + "px";
+        document.getElementById("p3").innerText =
+            ranking[2]?.equipo || "";
+
+        document.getElementById("p4").innerText =
+            ranking[3]?.equipo || "";
+
+        document.getElementById("v1").innerText =
+            (ranking[0]?.porcentaje ?? 0) + "%";
+
+        document.getElementById("v2").innerText =
+            (ranking[1]?.porcentaje ?? 0) + "%";
+
+        document.getElementById("v3").innerText =
+            (ranking[2]?.porcentaje ?? 0) + "%";
+
+        document.getElementById("v4").innerText =
+            (ranking[3]?.porcentaje ?? 0) + "%";
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+
 }
 
-window.addEventListener("resize", escalarPantalla);
-escalarPantalla();
+cargarRanking();
 
-
-function actualizar() {
-  fetch(URL)
-    .then(r => r.json())
-    .then(data => {
-
-      const resultados = data.resultados;
-
-      const pasion = Math.round(resultados["Pasión"].porcentaje);
-      const tension = Math.round(resultados["Tensión"].porcentaje);
-      const familia = Math.round(resultados["Familia y amigos"].porcentaje);
-      const cerveza = Math.round(resultados["Cerveza"].porcentaje);
-
-      document.getElementById("pasion").style.width = pasion + "%";
-      document.getElementById("tension").style.width = tension + "%";
-      document.getElementById("familia").style.width = familia + "%";
-      document.getElementById("cerveza").style.width = cerveza + "%";
-
-      document.querySelector("#pasion-texto .numero").innerText = pasion;
-      document.querySelector("#tension-texto .numero").innerText = tension;
-      document.querySelector("#familia-texto .numero").innerText = familia;
-      document.querySelector("#cerveza-texto .numero").innerText = cerveza;
-
-    });
-}
-
-actualizar();
-setInterval(actualizar, 5000);
+/* Actualiza cada minuto */
+setInterval(cargarRanking, 60000);
 
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
- 
-
-   
