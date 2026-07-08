@@ -1,213 +1,211 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=2304, height=768">
-<link rel="stylesheet" href="https://use.typekit.net/vsp7vcb.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Final-2026</title>
+    <style>
+        :root {
+            --canvas-width: 2560;
+            --canvas-height: 1440;
+            --stage-scale: 1;
+        }
 
-<title>Ranking Grupo K</title>
+        * {
+            box-sizing: border-box;
+        }
 
-<style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            background: #000;
+        }
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-html,body{
-    width:100%;
-    height:100%;
-    margin:0;
-    overflow:hidden;
-    font-family:Arial, sans-serif;
-}
+        .stage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: calc(var(--canvas-width) * 1px);
+            height: calc(var(--canvas-height) * 1px);
+            overflow: hidden;
+            transform: translate(-50%, -50%) scale(var(--stage-scale));
+            transform-origin: center center;
+        }
 
-#bgVideo{
-    position:fixed;
-    inset:0;
-    width:100vw;
-    height:100vh;
-    object-fit:fill;
-    z-index:1;
-}
+        .background-video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-#contenido{
-    position:fixed;
-    inset:0;
-    width:100vw;
-    height:100vh;
-    z-index:2;
-}
+        .winners {
+            position: absolute;
+            top: 74.5%;
+            left: 28%;
+            display: flex;
+            width: 1130px;
+            height: 361px;
+            align-items: center;
+            justify-content: center;
+            gap: 399px;
+            transform: translate(-50%, -50%);
+        }
 
-/* Posiciones de los equipos */
-/* NOMBRES */
+        .winner {
+            display: flex;
+            width: 416px;
+            height: 363px;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0.94);
+            transition: opacity 450ms ease, transform 450ms ease;
+        }
 
-.equipo{
+        .winner.is-visible {
+            opacity: 1;
+            transform: scale(1);
+        }
 
-    position:absolute;
-
-    font-family:"remora-sans-w5", sans-serif;
-    font-weight:900;
-    font-style:normal;
-
-    font-size:113px;
-
-    color:#012bff;
-
-    width:700px;
-    height:70px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    white-space:nowrap;
-    text-transform: uppercase;
-}
-
-/* PORCENTAJES */
-
-.porcentaje{
-
-    position:absolute;
-
-    font-family:"remora-sans-w5", sans-serif;
-    font-weight:900;
-    font-style:normal;
-
-    font-size:116px;
-
-    color:#0a2957;
-
-    white-space:nowrap;
-
-    z-index:9999;
-
-    }
-#v1{
-    left:2380px;
-    top:740px;
-}
-
-#v2{
-    left:2380px;
-    top:970px;
-}
-
-#v3{
-    left:2380px;
-    top:1220px;
-}
-
-#v4{
-    left:2380px;
-    top:1460px;
-
-}
-
-/* Coordenadas independientes */
-
-#p1{
-    left:967px;
-    top:770px;
-}
-
-#p2{
-    left:967px;
-    top:1010px;
-}
-
-#p3{
-    left:967px;
-    top:1257px;
-}
-
-#p4{
-    left:967px;
-    top:1510px;
-}
-
-
-</style>
+        .winner img {
+            display: block;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 34px 42px rgba(0, 0, 0, 0.42));
+        }
+    </style>
 </head>
-
 <body>
+    <main class="stage" aria-live="polite">
+        <video class="background-video" autoplay muted loop playsinline>
+            <source src="fondo.mp4" type="video/mp4" />
+        </video>
 
-<video
-    id="bgVideo"
-    autoplay
-    muted
-    loop
-    playsinline>
-    <source src="fondo.mp4" type="video/mp4">
-</video>
+        <section class="winners" aria-label="Opciones mas votadas">
+            <div class="winner" data-winner-slot="0"></div>
+            <div class="winner" data-winner-slot="1"></div>
+        </section>
+    </main>
 
-<div id="contenido">
+    <script>
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzXWt2A7win0rxAKO6XDW9BMkRfT2PcvJdqCGdtOoSOPVUtFvfeXuqoEOWFVBeFKS3S/exec';
+        const REFRESH_INTERVAL_MS = 30000;
+        const CANVAS_WIDTH = 2560;
+        const CANVAS_HEIGHT = 1440;
 
-<div id="p1" class="equipo"></div>
-<div id="p2" class="equipo"></div>
-<div id="p3" class="equipo"></div>
-<div id="p4" class="equipo"></div>
+        const svgByOption = new Map([
+            ['argentina', 'Argentina.svg'],
+            ['belgica', 'Bélgica.svg'],
+            ['bélgica', 'Bélgica.svg'],
+            ['espana', 'España.svg'],
+            ['españa', 'España.svg'],
+            ['francia', 'Francia.svg'],
+            ['inglaterra', 'Inglaterra.svg'],
+            ['marruecos', 'Marruecos.svg'],
+            ['maruecos', 'Marruecos.svg'],
+            ['noruega', 'Noruega.svg'],
+            ['suiza', 'Suiza.svg']
+        ]);
 
-<div id="v1" class="porcentaje"></div>
-<div id="v2" class="porcentaje"></div>
-<div id="v3" class="porcentaje"></div>
-<div id="v4" class="porcentaje"></div>
+        function resizeStage() {
+            const scale = Math.min(
+                window.innerWidth / CANVAS_WIDTH,
+                window.innerHeight / CANVAS_HEIGHT
+            );
 
-</div>
+            document.documentElement.style.setProperty('--stage-scale', scale);
+        }
 
-<script>
+        function normalizeOption(value) {
+            return String(value || '')
+                .trim()
+                .replace(/\.svg$/i, '')
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .toLowerCase();
+        }
 
-const API_URL = "https://script.googleusercontent.com/macros/echo?user_content_key=AUkAhnQaVTvO365cN_YzCVvGteNIh57YdOxFkt9PIhUDMu9aNh7Lge_yug1sI-k7xscq-d6wdHFzfMNKjGFLqxffsDSoDSmrIuelylKqbW4zMjb0oOy9II5Esixi2IHbrr4i-VncxGd2w0imYRQ8s1dkE8cUMA010Xga0S8EF-NUD1a7sElV2PJkJX8VjoJnNXcRK8oFARdXldp9y3_oyBTJMEvE3ql9JXVwIfdn38K9Im8Rfwcg4uXjHrYt0b7dJg9WiQD-40bPAVdOBF7JapIPJZpdKkXcVA&lib=MT1LZbfHctya4uObz9hnmzqeEHa1C_Htb";
+        function getSvgFileName(option) {
+            const cleanOption = String(option || '').trim();
+            const normalized = normalizeOption(cleanOption);
 
+            if (svgByOption.has(normalized)) {
+                return svgByOption.get(normalized);
+            }
 
-    async function cargarRanking(){
+            if (/\.svg$/i.test(cleanOption)) {
+                return cleanOption;
+            }
 
-    try{
+            return `${cleanOption}.svg`;
+        }
 
-        const response = await fetch(API_URL);
-        const ranking = await response.json();
+        function renderWinners(payload) {
+            const slots = document.querySelectorAll('[data-winner-slot]');
+            const results = Array.isArray(payload && payload.results)
+                ? payload.results.slice(0, 2)
+                : [];
 
-        document.getElementById("p1").innerText =
-            ranking[0]?.equipo || "";
+            slots.forEach((slot, index) => {
+                const result = results[index];
 
-        document.getElementById("p2").innerText =
-            ranking[1]?.equipo || "";
+                slot.classList.remove('is-visible');
+                slot.replaceChildren();
 
-        document.getElementById("p3").innerText =
-            ranking[2]?.equipo || "";
+                if (!result || !result.option) {
+                    return;
+                }
 
-        document.getElementById("p4").innerText =
-            ranking[3]?.equipo || "";
+                const image = document.createElement('img');
+                const fileName = getSvgFileName(result.option);
 
-        document.getElementById("v1").innerText =
-            (ranking[0]?.porcentaje ?? 0) + "%";
+                image.src = `SVG/${encodeURIComponent(fileName)}`;
+                image.alt = result.option;
+                image.onload = () => slot.classList.add('is-visible');
+                image.onerror = () => console.warn(`No se encontro SVG para: ${result.option}`);
 
-        document.getElementById("v2").innerText =
-            (ranking[1]?.porcentaje ?? 0) + "%";
+                slot.appendChild(image);
+            });
+        }
 
-        document.getElementById("v3").innerText =
-            (ranking[2]?.porcentaje ?? 0) + "%";
+        function loadResults() {
+            const callbackName = `topVotes_${Date.now()}`;
+            const script = document.createElement('script');
+            const url = new URL(APPS_SCRIPT_URL);
 
-        document.getElementById("v4").innerText =
-            (ranking[3]?.porcentaje ?? 0) + "%";
+            window[callbackName] = (payload) => {
+                renderWinners(payload);
+                script.remove();
+                delete window[callbackName];
+            };
 
-    }catch(error){
+            url.searchParams.set('callback', callbackName);
+            url.searchParams.set('v', Date.now());
 
-        console.error(error);
+            script.src = url.toString();
+            script.onerror = () => {
+                script.remove();
+                delete window[callbackName];
+            };
 
-    }
+            document.body.appendChild(script);
+        }
 
+        resizeStage();
+        loadResults();
 
-}
-
-cargarRanking();
-
-/* Actualiza cada minuto */
-setInterval(cargarRanking, 60000);
-
-</script>
-
+        window.addEventListener('resize', resizeStage);
+        window.setInterval(loadResults, REFRESH_INTERVAL_MS);
+    </script>
 </body>
 </html>

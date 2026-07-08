@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Capa_2" data-name="Capa 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 110.36 110.36">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+
+      .cls-2 {
+        fill: #d71125;
+      }
+
+      .cls-3 {
+        fill: none;
+      }
+
+      .cls-4 {
+        clip-path: url(#clippath-1);
+      }
+
+      .cls-5 {
+        fill: #c1272d;
+      }
+
+      .cls-6 {
+        fill: #283374;
+      }
+
+      .cls-7 {
+        clip-path: url(#clippath);
+      }
+    </style>
+    <clipPath id="clippath">
+      <circle class="cls-3" cx="55.18" cy="55.18" r="55.18"/>
+    </clipPath>
+    <clipPath id="clippath-1">
+      <rect class="cls-3" x="-22.03" y="-3.16" width="155.15" height="121.29"/>
+    </clipPath>
+  </defs>
+  <g id="Capa_2-2" data-name="Capa 2">
+    <g class="cls-7">
+      <g class="cls-4">
+        <rect class="cls-5" x="-31.08" y="-29.69" width="172.52" height="178.84"/>
+        <rect class="cls-6" x="-22.03" y="-3.16" width="51.72" height="121.29"/>
+        <rect class="cls-1" x="29.69" y="-3.16" width="51.72" height="121.29"/>
+        <rect class="cls-2" x="81.41" y="-3.16" width="51.72" height="121.29"/>
+      </g>
+    </g>
+  </g>
+</svg>
