@@ -1,211 +1,209 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Final-2026</title>
-    <style>
-        :root {
-            --canvas-width: 2560;
-            --canvas-height: 1440;
-            --stage-scale: 1;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html,
-        body {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            overflow: hidden;
-            background: #000;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        .stage {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: calc(var(--canvas-width) * 1px);
-            height: calc(var(--canvas-height) * 1px);
-            overflow: hidden;
-            transform: translate(-50%, -50%) scale(var(--stage-scale));
-            transform-origin: center center;
-        }
-
-        .background-video {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .winners {
-            position: absolute;
-            top: 74.5%;
-            left: 28%;
-            display: flex;
-            width: 1130px;
-            height: 361px;
-            align-items: center;
-            justify-content: center;
-            gap: 399px;
-            transform: translate(-50%, -50%);
-        }
-
-        .winner {
-            display: flex;
-            width: 416px;
-            height: 363px;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transform: scale(0.94);
-            transition: opacity 450ms ease, transform 450ms ease;
-        }
-
-        .winner.is-visible {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        .winner img {
-            display: block;
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 34px 42px rgba(0, 0, 0, 0.42));
-        }
-    </style>
-</head>
-<body>
-    <main class="stage" aria-live="polite">
-        <video class="background-video" autoplay muted loop playsinline>
-            <source src="fondo.mp4" type="video/mp4" />
-        </video>
-
-        <section class="winners" aria-label="Opciones mas votadas">
-            <div class="winner" data-winner-slot="0"></div>
-            <div class="winner" data-winner-slot="1"></div>
-        </section>
-    </main>
-
-    <script>
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzXWt2A7win0rxAKO6XDW9BMkRfT2PcvJdqCGdtOoSOPVUtFvfeXuqoEOWFVBeFKS3S/exec';
-        const REFRESH_INTERVAL_MS = 30000;
-        const CANVAS_WIDTH = 2560;
-        const CANVAS_HEIGHT = 1440;
-
-        const svgByOption = new Map([
-            ['argentina', 'Argentina.svg'],
-            ['belgica', 'Bélgica.svg'],
-            ['bélgica', 'Bélgica.svg'],
-            ['espana', 'España.svg'],
-            ['españa', 'España.svg'],
-            ['francia', 'Francia.svg'],
-            ['inglaterra', 'Inglaterra.svg'],
-            ['marruecos', 'Marruecos.svg'],
-            ['maruecos', 'Marruecos.svg'],
-            ['noruega', 'Noruega.svg'],
-            ['suiza', 'Suiza.svg']
-        ]);
-
-        function resizeStage() {
-            const scale = Math.min(
-                window.innerWidth / CANVAS_WIDTH,
-                window.innerHeight / CANVAS_HEIGHT
-            );
-
-            document.documentElement.style.setProperty('--stage-scale', scale);
-        }
-
-        function normalizeOption(value) {
-            return String(value || '')
-                .trim()
-                .replace(/\.svg$/i, '')
-                .normalize('NFD')
-                .replace(/[\u0300-\u036f]/g, '')
-                .toLowerCase();
-        }
-
-        function getSvgFileName(option) {
-            const cleanOption = String(option || '').trim();
-            const normalized = normalizeOption(cleanOption);
-
-            if (svgByOption.has(normalized)) {
-                return svgByOption.get(normalized);
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Final-2026</title>
+        <style>
+            :root {
+                --canvas-width: 2560;
+                --canvas-height: 1440;
+                --stage-scale: 1;
             }
 
-            if (/\.svg$/i.test(cleanOption)) {
-                return cleanOption;
+            * {
+                box-sizing: border-box;
             }
 
-            return `${cleanOption}.svg`;
-        }
+            html,
+            body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                overflow: hidden;
+                background: #000;
+            }
 
-        function renderWinners(payload) {
-            const slots = document.querySelectorAll('[data-winner-slot]');
-            const results = Array.isArray(payload && payload.results)
-                ? payload.results.slice(0, 2)
-                : [];
+            body {
+                font-family: Arial, Helvetica, sans-serif;
+            }
 
-            slots.forEach((slot, index) => {
-                const result = results[index];
+            .stage {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: calc(var(--canvas-width) * 1px);
+                height: calc(var(--canvas-height) * 1px);
+                overflow: hidden;
+                transform: translate(-50%, -50%) scale(var(--stage-scale));
+                transform-origin: center center;
+            }
 
-                slot.classList.remove('is-visible');
-                slot.replaceChildren();
+            .background-video {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
 
-                if (!result || !result.option) {
-                    return;
+            .winners {
+                position: absolute;
+                top: 74.5%;
+                left: 28%;
+                display: flex;
+                width: 1130px;
+                height: 361px;
+                align-items: center;
+                justify-content: center;
+                gap: 399px;
+                transform: translate(-50%, -50%);
+            }
+
+            .winner {
+                display: flex;
+                width: 416px;
+                height: 363px;
+                align-items: center;
+                justify-content: center;
+                opacity: 0;
+                transform: scale(0.94);
+                transition:
+                    opacity 450ms ease,
+                    transform 450ms ease;
+            }
+
+            .winner.is-visible {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            .winner img {
+                display: block;
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                filter: drop-shadow(0 34px 42px rgba(0, 0, 0, 0.42));
+            }
+        </style>
+    </head>
+    <body>
+        <main class="stage" aria-live="polite">
+            <video class="background-video" autoplay muted loop playsinline>
+                <source src="fondo.mp4" type="video/mp4" />
+            </video>
+
+            <section class="winners" aria-label="Opciones mas votadas">
+                <div class="winner" data-winner-slot="0"></div>
+                <div class="winner" data-winner-slot="1"></div>
+            </section>
+        </main>
+
+        <script>
+            const APPS_SCRIPT_URL =
+                "https://script.google.com/macros/s/AKfycbzXWt2A7win0rxAKO6XDW9BMkRfT2PcvJdqCGdtOoSOPVUtFvfeXuqoEOWFVBeFKS3S/exec";
+            const REFRESH_INTERVAL_MS = 30000;
+            const CANVAS_WIDTH = 2560;
+            const CANVAS_HEIGHT = 1440;
+
+            const svgByOption = new Map([
+                ["argentina", "Argentina.svg"],
+                ["belgica", "Bélgica.svg"],
+                ["bélgica", "Bélgica.svg"],
+                ["espana", "España.svg"],
+                ["españa", "España.svg"],
+                ["francia", "Francia.svg"],
+                ["inglaterra", "Inglaterra.svg"],
+                ["marruecos", "Marruecos.svg"],
+                ["maruecos", "Marruecos.svg"],
+                ["noruega", "Noruega.svg"],
+                ["suiza", "Suiza.svg"]
+            ]);
+
+            function resizeStage() {
+                const scale = Math.min(window.innerWidth / CANVAS_WIDTH, window.innerHeight / CANVAS_HEIGHT);
+
+                document.documentElement.style.setProperty("--stage-scale", scale);
+            }
+
+            function normalizeOption(value) {
+                return String(value || "")
+                    .trim()
+                    .replace(/\.svg$/i, "")
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "")
+                    .toLowerCase();
+            }
+
+            function getSvgFileName(option) {
+                const cleanOption = String(option || "").trim();
+                const normalized = normalizeOption(cleanOption);
+
+                if (svgByOption.has(normalized)) {
+                    return svgByOption.get(normalized);
                 }
 
-                const image = document.createElement('img');
-                const fileName = getSvgFileName(result.option);
+                if (/\.svg$/i.test(cleanOption)) {
+                    return cleanOption;
+                }
 
-                image.src = `SVG/${encodeURIComponent(fileName)}`;
-                image.alt = result.option;
-                image.onload = () => slot.classList.add('is-visible');
-                image.onerror = () => console.warn(`No se encontro SVG para: ${result.option}`);
+                return `${cleanOption}.svg`;
+            }
 
-                slot.appendChild(image);
-            });
-        }
+            function renderWinners(payload) {
+                const slots = document.querySelectorAll("[data-winner-slot]");
+                const results = Array.isArray(payload && payload.results) ? payload.results.slice(0, 2) : [];
 
-        function loadResults() {
-            const callbackName = `topVotes_${Date.now()}`;
-            const script = document.createElement('script');
-            const url = new URL(APPS_SCRIPT_URL);
+                slots.forEach((slot, index) => {
+                    const result = results[index];
 
-            window[callbackName] = (payload) => {
-                renderWinners(payload);
-                script.remove();
-                delete window[callbackName];
-            };
+                    slot.classList.remove("is-visible");
+                    slot.replaceChildren();
 
-            url.searchParams.set('callback', callbackName);
-            url.searchParams.set('v', Date.now());
+                    if (!result || !result.option) {
+                        return;
+                    }
 
-            script.src = url.toString();
-            script.onerror = () => {
-                script.remove();
-                delete window[callbackName];
-            };
+                    const image = document.createElement("img");
+                    const fileName = getSvgFileName(result.option);
 
-            document.body.appendChild(script);
-        }
+                    image.src = `SVG/${encodeURIComponent(fileName)}`;
+                    image.alt = result.option;
+                    image.onload = () => slot.classList.add("is-visible");
+                    image.onerror = () => console.warn(`No se encontro SVG para: ${result.option}`);
 
-        resizeStage();
-        loadResults();
+                    slot.appendChild(image);
+                });
+            }
 
-        window.addEventListener('resize', resizeStage);
-        window.setInterval(loadResults, REFRESH_INTERVAL_MS);
-    </script>
-</body>
+            function loadResults() {
+                const callbackName = `topVotes_${Date.now()}`;
+                const script = document.createElement("script");
+                const url = new URL(APPS_SCRIPT_URL);
+
+                window[callbackName] = (payload) => {
+                    renderWinners(payload);
+                    script.remove();
+                    delete window[callbackName];
+                };
+
+                url.searchParams.set("callback", callbackName);
+                url.searchParams.set("v", Date.now());
+
+                script.src = url.toString();
+                script.onerror = () => {
+                    script.remove();
+                    delete window[callbackName];
+                };
+
+                document.body.appendChild(script);
+            }
+
+            resizeStage();
+            loadResults();
+
+            window.addEventListener("resize", resizeStage);
+            window.setInterval(loadResults, REFRESH_INTERVAL_MS);
+        </script>
+    </body>
 </html>
